@@ -38,6 +38,13 @@ export default new Vuex.Store({
       if (mr) {
         Vue.set(mr, 'pipeline', pipeline);
       }
+    },
+
+    updateSettings(state, settings) {
+      console.log('TODO updateSettings', settings);
+      // Change values
+      // Update watchers
+
     }
   },
   actions: {
@@ -55,6 +62,10 @@ export default new Vuex.Store({
 
     updatePipeline({ commit }, mr, pipeline) {
       commit('updatePipeline', mr, pipeline);
+    },
+
+    updateSettings({ commit }, settings) {
+      commit('updateSettings', settings);
     }
   }
 });

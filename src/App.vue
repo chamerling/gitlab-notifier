@@ -1,13 +1,47 @@
 <template>
   <div id="app">
-    <v-app>
+    <v-app dark>
       <v-content>
+        <v-toolbar dark dense flat>
+          <v-toolbar-title>Gitlab Notifier</v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-btn icon @click="openSettings" v-if="$route.name === 'home'">
+            <v-icon small>settings</v-icon>
+          </v-btn>
+          <v-btn icon @click="goBack" v-else>
+            <v-icon small>clear</v-icon>
+          </v-btn>
+        </v-toolbar>
         <v-container class="pa-0">
-          <router-view/>
+          <transition name="fade" mode="out-in">
+            <router-view/>
+          </transition>
         </v-container>
       </v-content>
     </v-app>
   </div>
 </template>
-<style lang="stylus">
+<script>
+export default {
+  methods: {
+    openSettings() {
+      this.$router.push('settings');
+    },
+    goBack() {
+      this.$router.go(-1);
+    }
+  }
+}
+</script>
+<style>
+.fade-enter-active, .fade-leave-active {
+  transition-duration: 0.2s;
+  transition-property: opacity;
+  transition-timing-function: ease;
+}
+
+.fade-enter, .fade-leave-active {
+  opacity: 0
+}
 </style>
+

@@ -1,5 +1,5 @@
 <template>
-  <v-list v-if="mergeRequests.length" two-line>
+  <v-list v-if="mergeRequests.length" two-line dark>
     <div v-for="mergeRequest in mergeRequests" :key="mergeRequest.iid">
       <merge-request-item :mr="mergeRequest"/>
     </div>
