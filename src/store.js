@@ -45,14 +45,8 @@ export default new Vuex.Store({
     },
 
     updateSettings(state, settings) {
-      console.log('TODO updateSettings', settings);
-      // Change values
-      // Update watchers
-    },
-    launchWatchers() {
-      const gl = new Gitlab(this);
-
-      gl.watchMergeRequests();
+      state.apiEndpoint = settings.apiEndpoint;
+      state.apiToken = settings.apiToken;
     }
   },
   actions: {
@@ -72,12 +66,15 @@ export default new Vuex.Store({
       commit('updatePipeline', mr, pipeline);
     },
 
-    updateSettings({ commit }, settings) {
+    updateSettings({ commit, dispatch }, settings) {
       commit('updateSettings', settings);
+      dispatch('launchWatchers');
     },
 
-    launchWatchers({ commit }) {
-      commit('launchWatchers');
+    launchWatchers() {
+      const gl = new Gitlab(this);
+
+      gl.watchMergeRequests();
     }
   }
 });
