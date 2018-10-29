@@ -7,8 +7,8 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    apiEndpoint: process.env.VUE_APP_GITLAB || 'https://gitlab.com',
-    apiToken: process.env.VUE_APP_API_TOKEN,
+    apiEndpoint: process.env.VUE_APP_GITLAB || localStorage.getItem('apiEndpoint') || 'https://gitlab.com',
+    apiToken: process.env.VUE_APP_API_TOKEN || localStorage.getItem('apiToken'),
     mergeRequests: []
   },
   getters: {
@@ -47,6 +47,8 @@ export default new Vuex.Store({
     updateSettings(state, settings) {
       state.apiEndpoint = settings.apiEndpoint;
       state.apiToken = settings.apiToken;
+      localStorage.setItem('apiEndpoint', state.apiEndpoint);
+      localStorage.setItem('apiToken', state.apiToken);
     }
   },
   actions: {
