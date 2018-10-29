@@ -30,6 +30,18 @@ export default {
     goBack() {
       this.$router.go(-1);
     }
+  },
+  computed: {
+    isConfigured() {
+      return this.$store.getters.isConfigured;
+    }
+  },
+  mounted() {
+    if (!this.isConfigured) {
+      this.openSettings();
+    } else {
+      this.$store.dispatch('launchWatchers');
+    }
   }
 }
 </script>

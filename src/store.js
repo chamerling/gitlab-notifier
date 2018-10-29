@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import _ from 'lodash';
+import Gitlab from './gitlab';
 
 Vue.use(Vuex);
 
@@ -13,6 +14,9 @@ export default new Vuex.Store({
   getters: {
     getMergeRequest(state, iid) {
       return _.find(state.mergeRequests, { iid });
+    },
+    isConfigured(state) {
+      return !!state.apiToken;
     }
   },
   mutations: {
@@ -44,7 +48,11 @@ export default new Vuex.Store({
       console.log('TODO updateSettings', settings);
       // Change values
       // Update watchers
+    },
+    launchWatchers() {
+      const gl = new Gitlab(this);
 
+      gl.watchMergeRequests();
     }
   },
   actions: {
@@ -66,6 +74,10 @@ export default new Vuex.Store({
 
     updateSettings({ commit }, settings) {
       commit('updateSettings', settings);
+    },
+
+    launchWatchers({ commit }) {
+      commit('launchWatchers');
     }
   }
 });
