@@ -6,7 +6,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    apiEndpoint: process.env.VUE_APP_GITLAB || 'https://ci.linagora.com',
+    apiEndpoint: process.env.VUE_APP_GITLAB || 'https://gitlab.com',
     apiToken: process.env.VUE_APP_API_TOKEN,
     mergeRequests: []
   },
