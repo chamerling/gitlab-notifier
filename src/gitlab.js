@@ -72,6 +72,10 @@ class Gitlab {
   fetchPipelines(projectId, refId) {
     return this.client.get(`/api/v4/projects/${projectId}/pipelines?ref=${refId}`);
   }
+
+  getCurrentUser() {
+    return this.client.get('/api/v4/user');
+  }
 }
 
 export default Gitlab;
