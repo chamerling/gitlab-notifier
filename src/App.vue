@@ -2,7 +2,7 @@
   <div id="app">
     <v-app dark>
       <v-content>
-        <v-toolbar dark dense flat>
+        <v-toolbar dark dense flat fixed app>
           <v-toolbar-title>Gitlab Notifier</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-btn icon @click="openSettings" v-if="$route.name === 'home'">
