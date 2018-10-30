@@ -5,7 +5,7 @@ import axios from 'axios';
 class Gitlab {
   constructor(store, options = { pollingInterval: 3000 }) {
     this.store = store;
-    this.subscriptions = {};
+    this.subscriptions = new Map();
     this.pollingInterval = options.pollingInterval || 3000;
     this.client = axios.create({
       baseURL: this.store.state.apiEndpoint,
@@ -26,25 +26,36 @@ class Gitlab {
       distinct(mr => mr.id)
     );
 
-    newMergeRequest$.subscribe(mr => {
+    this.newMergeRequestSubscription = newMergeRequest$.subscribe(mr => {
       this.store.dispatch('addMergeRequest', mr);
+      this.subscriptions.set(mr.iid, []);
 
-      const pipeline$ = this.watchPipeline(mr).subscribe(pipeline => {
+      const pipelineSubscription = this.watchPipeline(mr).subscribe(pipeline => {
         if (pipeline && pipeline[0]) {
           this.store.dispatch('updatePipeline', { mergeRequest: mr, pipeline: pipeline[0] });
         }
       });
 
-      const mergeRequest$ = this.watchMergeRequest(mr.project_id, mr.iid).subscribe(mergeRequest => {
+      const mergeRequestSubscription = this.watchMergeRequest(mr.project_id, mr.iid).subscribe(mergeRequest => {
         this.store.dispatch('updateMergeRequest', mergeRequest);
 
         if (mergeRequest.state === 'merged') {
           this.store.dispatch('removeMergeRequest', mergeRequest);
-          mergeRequest$.unsubscribe();
-          pipeline$.unsubscribe();
+          this.subscriptions.get(mr.iid).forEach(subscription => subscription.unsubscribe());
+          this.subscriptions.delete(mr.iid);
         }
       });
+      this.subscriptions.get(mr.iid).push(...[pipelineSubscription, mergeRequestSubscription]);
     });
+  }
+
+  unwatchMergeRequests() {
+    this.subscriptions.forEach((value, key) => {
+      value.forEach(subscription => subscription.unsubscribe());
+      this.subscriptions.delete(key);
+    });
+
+    this.newMergeRequestSubscription && this.newMergeRequestSubscription.unsubscribe();
   }
 
   watchMergeRequest(projectId, mergeRequestId) {

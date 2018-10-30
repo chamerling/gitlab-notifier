@@ -3,9 +3,11 @@ import Vuex from 'vuex';
 import _ from 'lodash';
 import Gitlab from './gitlab';
 
+let gitlab;
+
 Vue.use(Vuex);
 
-export default new Vuex.Store({
+const store = new Vuex.Store({
   state: {
     apiEndpoint: process.env.VUE_APP_GITLAB || localStorage.getItem('apiEndpoint') || 'https://gitlab.com',
     apiToken: process.env.VUE_APP_API_TOKEN || localStorage.getItem('apiToken'),
@@ -21,11 +23,15 @@ export default new Vuex.Store({
   },
   mutations: {
     addMergeRequest(state, mergeRequest) {
-     state.mergeRequests.push(mergeRequest)
+      state.mergeRequests.push(mergeRequest)
     },
 
     removeMergeRequest(state, mergeRequest) {
       state.mergeRequests.splice(_.findIndex(state.mergeRequests, mr => mr.iid === mergeRequest.iid), 1);
+    },
+
+    cleanMergeRequests(state) {
+      state.mergeRequests = [];
     },
 
     updateMergeRequest(state, mergeRequest) {
@@ -73,10 +79,14 @@ export default new Vuex.Store({
       dispatch('launchWatchers');
     },
 
-    launchWatchers() {
-      const gl = new Gitlab(this);
-
-      gl.watchMergeRequests();
+    launchWatchers({ commit }) {
+      gitlab.unwatchMergeRequests();
+      commit('cleanMergeRequests');
+      gitlab.watchMergeRequests();
     }
   }
 });
+
+gitlab = new Gitlab(store);
+
+export default store;
