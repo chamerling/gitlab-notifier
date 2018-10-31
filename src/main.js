@@ -13,7 +13,6 @@ Vue.use(Vuetify);
 Vue.use(VueMoment);
 
 gitlab.init(store);
-console.log('INIT')
 
 new Vue({
   router,
