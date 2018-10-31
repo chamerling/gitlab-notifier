@@ -13,6 +13,7 @@
     "axios": "^0.18.0",
     "electron": "^3.0.6",
     "electron-debug": "^2.0.0",
+    "eventemitter3": "^3.1.0",
     "menubar": "^5.2.3",
     "rxjs": "^6.3.3",
     "vue": "^2.5.17",
