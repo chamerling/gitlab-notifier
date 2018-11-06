@@ -35,7 +35,7 @@ export default new Vuex.Store({
     updateMergeRequest(state, mergeRequest) {
       const mr = _.find(state.mergeRequests, { iid: mergeRequest.iid });
       if (mr) {
-        mr.approvals = mergeRequest.approvals;
+        mr.upvotes = mergeRequest.upvotes;
         mr.title = mergeRequest.title;
       }
     },
