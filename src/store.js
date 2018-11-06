@@ -54,6 +54,8 @@ export default new Vuex.Store({
       state.apiToken = settings.apiToken;
       localStorage.setItem('apiEndpoint', state.apiEndpoint);
       localStorage.setItem('apiToken', state.apiToken);
+      gitlab.get().unwatchMergeRequests();
+      gitlab.init(this);
     }
   },
   actions: {
