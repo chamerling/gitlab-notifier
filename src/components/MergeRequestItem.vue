@@ -20,10 +20,16 @@
     </v-list-tile-content>
 
     <v-list-tile-action>
-      <v-badge small color="blue" overlap left>
-        <span slot="badge">{{ mr.upvotes }}</span>
-        <v-icon color="grey">thumb_up</v-icon>
-      </v-badge>
+      <div id="actions">
+        <v-badge class="pr-2" small overlap left>
+          <span slot="badge">{{ mr.user_notes_count }}</span>
+          <v-icon>chat</v-icon>
+        </v-badge>
+        <v-badge overlap left>
+          <span slot="badge">{{ mr.upvotes }}</span>
+          <v-icon>thumb_up</v-icon>
+        </v-badge>
+      </div>
     </v-list-tile-action>
   </v-list-tile>
 </template>
@@ -59,6 +65,11 @@ export default {
 
 <style lang="stylus" scoped>
   #subtitle {
+    display: flex
+    align-items: center
+  }
+
+  #actions {
     display: flex
     align-items: center
   }

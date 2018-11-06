@@ -35,6 +35,7 @@ export default new Vuex.Store({
     updateMergeRequest(state, mergeRequest) {
       const mr = _.find(state.mergeRequests, { iid: mergeRequest.iid });
       if (mr) {
+        mr.user_notes_count = mergeRequest.user_notes_count;
         mr.upvotes = mergeRequest.upvotes;
         mr.title = mergeRequest.title;
       }
